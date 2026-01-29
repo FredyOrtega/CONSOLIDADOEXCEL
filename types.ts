@@ -10,10 +10,11 @@ export interface ExcelRow {
   CONCEPTO: string;
   "RTE FTE": number;
   "RTE IVA": number;
+  ICA: number;
   DSTO: number;
   "SALDO PENDIENTE": number;
   ANTICIPO: number;
-  [key: string]: any; // Permite flexibilidad extra durante el parseo
+  [key: string]: any;
 }
 
 export interface FileData {
@@ -35,6 +36,7 @@ export const MANDATORY_COLUMNS = [
   "CONCEPTO",
   "RTE FTE",
   "RTE IVA",
+  "ICA",
   "DSTO",
   "SALDO PENDIENTE",
   "ANTICIPO"

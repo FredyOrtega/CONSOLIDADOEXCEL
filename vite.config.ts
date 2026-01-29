@@ -7,7 +7,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     // 🔴 CLAVE para GitHub Pages
-    base: '/excel-multi-sheet-merger-pro/',
+    base: '/CONSOLIDADOEXCEL/',
 
     plugins: [react()],
 

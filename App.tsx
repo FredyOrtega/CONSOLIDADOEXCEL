@@ -1,12 +1,13 @@
 
+
 import React, { useState, useCallback, useMemo } from 'react';
-import { 
-  FileSpreadsheet, 
-  Upload, 
-  Download, 
-  Trash2, 
-  AlertCircle, 
-  FileCheck, 
+import {
+  FileSpreadsheet,
+  Upload,
+  Download,
+  Trash2,
+  AlertCircle,
+  FileCheck,
   Sparkles,
   ChevronRight,
   Database
@@ -79,7 +80,6 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
-      {/* Header */}
       <header className="bg-white border-b border-slate-200 px-6 py-4 sticky top-0 z-10 shadow-sm">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -88,10 +88,10 @@ const App: React.FC = () => {
             </div>
             <div>
               <h1 className="text-xl font-bold text-slate-900 tracking-tight">Excel Merger Pro</h1>
-              <p className="text-xs text-slate-500 font-medium">Consolida reportes contables con un clic</p>
+              <p className="text-xs text-slate-500 font-medium">Consolida reportes con ICA y Retenciones</p>
             </div>
           </div>
-          
+
           <div className="flex gap-3">
             {mergedData.length > 0 && (
               <button
@@ -100,9 +100,9 @@ const App: React.FC = () => {
                 className="flex items-center gap-2 bg-indigo-50 text-indigo-700 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-100 transition-colors disabled:opacity-50"
               >
                 {isAnalyzing ? (
-                   <span className="animate-spin h-4 w-4 border-2 border-indigo-700 border-t-transparent rounded-full"></span>
+                  <span className="animate-spin h-4 w-4 border-2 border-indigo-700 border-t-transparent rounded-full"></span>
                 ) : <Sparkles className="w-4 h-4" />}
-                {isAnalyzing ? "Analizando..." : "Análisis IA"}
+                Análisis IA
               </button>
             )}
             <button
@@ -118,7 +118,6 @@ const App: React.FC = () => {
       </header>
 
       <main className="flex-1 max-w-7xl mx-auto w-full p-6 space-y-8">
-        {/* Upload Section */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-1 space-y-6">
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
@@ -132,62 +131,42 @@ const App: React.FC = () => {
                   <p className="mb-2 text-sm text-slate-600 font-medium">Click para seleccionar</p>
                   <p className="text-xs text-slate-400">Excel (.xlsx, .xls)</p>
                 </div>
-                <input 
-                  type="file" 
-                  className="hidden" 
-                  multiple 
+                <input
+                  type="file"
+                  className="hidden"
+                  multiple
                   accept=".xlsx, .xls"
                   onChange={handleFileChange}
                 />
               </label>
-              
-              <div className="mt-6 space-y-2">
-                <h3 className="text-xs font-bold text-slate-400 uppercase">Columnas Requeridas:</h3>
-                <div className="flex flex-wrap gap-1">
-                  {MANDATORY_COLUMNS.map(col => (
-                    <span key={col} className="text-[10px] bg-slate-100 text-slate-600 px-2 py-1 rounded-md">
-                      {col}
-                    </span>
-                  ))}
-                </div>
-              </div>
             </div>
 
-            {/* Files List */}
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-sm font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
                   <FileCheck className="w-4 h-4 text-emerald-500" />
-                  Lista de Archivos
+                  Archivos Listos
                 </h2>
                 <span className="text-xs font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">
                   {files.length}
                 </span>
               </div>
-              
               <div className="space-y-3 max-h-[400px] overflow-y-auto pr-1">
                 {files.length === 0 ? (
-                  <p className="text-center py-10 text-slate-400 text-sm italic">
-                    No hay archivos cargados
-                  </p>
+                  <p className="text-center py-10 text-slate-400 text-sm italic">Sin archivos</p>
                 ) : (
                   files.map((file) => (
                     <div key={file.id} className="group flex items-center justify-between p-3 bg-slate-50 border border-slate-100 rounded-xl hover:border-emerald-200 transition-colors">
                       <div className="flex items-center gap-3 overflow-hidden">
-                        <div className={`p-2 rounded-lg ${file.status === 'error' ? 'bg-red-100' : 'bg-white shadow-sm'}`}>
-                          <FileSpreadsheet className={`w-4 h-4 ${file.status === 'error' ? 'text-red-500' : 'text-emerald-600'}`} />
+                        <div className="p-2 rounded-lg bg-white shadow-sm">
+                          <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
                         </div>
                         <div className="truncate">
                           <p className="text-sm font-semibold text-slate-700 truncate">{file.name}</p>
-                          <p className="text-[10px] text-slate-400 font-medium">
-                            {(file.size / 1024).toFixed(1)} KB • {file.data.length} filas
-                          </p>
+                          <p className="text-[10px] text-slate-400 font-medium">{file.data.length} filas</p>
                         </div>
                       </div>
-                      <button 
-                        onClick={() => removeFile(file.id)}
-                        className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all opacity-0 group-hover:opacity-100"
-                      >
+                      <button onClick={() => removeFile(file.id)} className="p-1.5 text-slate-400 hover:text-red-500 transition-all opacity-0 group-hover:opacity-100">
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
@@ -197,35 +176,22 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          {/* Main Table / Data Area */}
           <div className="lg:col-span-2 space-y-6">
-            {/* IA Analysis Panel (if exists) */}
             {aiAnalysis && (
-              <div className="bg-indigo-900 text-indigo-50 p-6 rounded-2xl border border-indigo-700 shadow-xl shadow-indigo-200 relative overflow-hidden">
-                <div className="absolute top-0 right-0 p-4 opacity-10">
-                  <Sparkles className="w-24 h-24" />
-                </div>
+              <div className="bg-indigo-900 text-indigo-50 p-6 rounded-2xl border border-indigo-700 shadow-xl relative overflow-hidden">
                 <div className="relative z-10">
                   <div className="flex items-center gap-2 mb-4">
                     <Sparkles className="w-5 h-5 text-indigo-300" />
                     <h2 className="font-bold text-lg">Resumen Inteligente</h2>
                   </div>
-                  <div className="prose prose-invert prose-sm max-w-none">
-                    <div className="whitespace-pre-wrap leading-relaxed text-indigo-100 font-medium">
-                      {aiAnalysis}
-                    </div>
+                  <div className="whitespace-pre-wrap leading-relaxed text-indigo-100 font-medium prose prose-invert prose-sm">
+                    {aiAnalysis}
                   </div>
-                  <button 
-                    onClick={() => setAiAnalysis(null)}
-                    className="mt-4 text-xs font-bold text-indigo-300 hover:text-white transition-colors underline underline-offset-4"
-                  >
-                    Cerrar Análisis
-                  </button>
+                  <button onClick={() => setAiAnalysis(null)} className="mt-4 text-xs font-bold text-indigo-300 hover:text-white underline">Cerrar</button>
                 </div>
               </div>
             )}
 
-            {/* Consolidado Info Cards */}
             {mergedData.length > 0 && (
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
@@ -239,37 +205,32 @@ const App: React.FC = () => {
                   </p>
                 </div>
                 <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                  <p className="text-[10px] font-bold text-slate-400 uppercase">Total ICA</p>
+                  <p className="text-xl font-bold text-blue-600">
+                    ${mergedData.reduce((sum, row) => sum + (Number(row.ICA) || 0), 0).toLocaleString()}
+                  </p>
+                </div>
+                <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
                   <p className="text-[10px] font-bold text-slate-400 uppercase">Saldo Pendiente</p>
                   <p className="text-xl font-bold text-amber-600">
                     ${mergedData.reduce((sum, row) => sum + (Number(row['SALDO PENDIENTE']) || 0), 0).toLocaleString()}
                   </p>
                 </div>
-                <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-                  <p className="text-[10px] font-bold text-slate-400 uppercase">Anticipos</p>
-                  <p className="text-xl font-bold text-indigo-600">
-                    ${mergedData.reduce((sum, row) => sum + (Number(row.ANTICIPO) || 0), 0).toLocaleString()}
-                  </p>
-                </div>
               </div>
             )}
 
-            {/* Data Preview Table */}
             <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
               <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
                 <h2 className="text-sm font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
                   <Database className="w-4 h-4 text-emerald-500" />
-                  Vista Previa del Consolidado
+                  Vista Previa
                 </h2>
-                {mergedData.length > 0 && (
-                  <p className="text-xs text-slate-500 font-medium">Mostrando las primeras 100 filas</p>
-                )}
               </div>
-              
               <div className="overflow-x-auto flex-1 max-h-[600px]">
                 {mergedData.length === 0 ? (
                   <div className="py-32 flex flex-col items-center text-slate-300">
                     <Database className="w-16 h-16 mb-4 opacity-20" />
-                    <p className="text-sm font-medium">Cargue archivos para ver la vista previa</p>
+                    <p className="text-sm font-medium">Esperando datos...</p>
                   </div>
                 ) : (
                   <table className="w-full text-left border-collapse">
@@ -296,78 +257,19 @@ const App: React.FC = () => {
                   </table>
                 )}
               </div>
-              
-              {mergedData.length > 0 && (
-                <div className="px-6 py-3 bg-slate-50 border-t border-slate-100 text-[10px] text-slate-400 font-bold uppercase text-center tracking-widest">
-                  Fin de la vista previa • Total: {mergedData.length} registros
-                </div>
-              )}
             </div>
           </div>
         </div>
       </main>
 
-      {/* Empty State / Instructional Overlay */}
-      {files.length === 0 && !isProcessing && (
-        <div className="fixed bottom-10 right-10 bg-emerald-600 text-white p-6 rounded-2xl shadow-2xl max-w-sm animate-bounce-slow">
-          <div className="flex items-start gap-4">
-            <div className="bg-emerald-500 p-3 rounded-xl shadow-lg">
-              <Upload className="w-6 h-6" />
-            </div>
-            <div>
-              <h3 className="font-bold text-lg mb-1">¿Empezamos?</h3>
-              <p className="text-sm text-emerald-100 leading-snug">
-                Arrastra aquí tus reportes de Excel o haz clic en el botón de carga para consolidarlos al instante.
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
-
       {isProcessing && (
         <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white p-8 rounded-3xl shadow-2xl flex flex-col items-center gap-4">
-            <div className="relative">
-              <div className="w-16 h-16 border-4 border-emerald-100 border-t-emerald-600 rounded-full animate-spin"></div>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <FileSpreadsheet className="w-6 h-6 text-emerald-600" />
-              </div>
-            </div>
-            <div className="text-center">
-              <h3 className="font-bold text-slate-800 text-lg">Procesando Archivos</h3>
-              <p className="text-sm text-slate-500">Estamos normalizando tus columnas...</p>
-            </div>
+            <div className="w-16 h-16 border-4 border-emerald-100 border-t-emerald-600 rounded-full animate-spin"></div>
+            <p className="font-bold text-slate-800">Uniendo reportes...</p>
           </div>
         </div>
       )}
-
-      <footer className="py-6 border-t border-slate-200 px-6">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-slate-400 font-medium">
-            © 2024 Excel Merger Pro - Herramienta de Consolidación Contable
-          </p>
-          <div className="flex items-center gap-6">
-            <span className="flex items-center gap-1 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-              <AlertCircle className="w-3 h-3 text-emerald-500" />
-              Seguro & Local
-            </span>
-            <span className="flex items-center gap-1 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-              <ChevronRight className="w-3 h-3 text-emerald-500" />
-              Impulsado por Gemini AI
-            </span>
-          </div>
-        </div>
-      </footer>
-
-      <style>{`
-        @keyframes bounce-slow {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
-        }
-        .animate-bounce-slow {
-          animation: bounce-slow 4s ease-in-out infinite;
-        }
-      `}</style>
     </div>
   );
 };
